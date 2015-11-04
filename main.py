@@ -93,31 +93,26 @@ api = tweepy.API(auth)
 
 
 class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        t = tornado.template.Template(html)
-        self.write(t.generate(tweet_senti="0", hashtag_senti="0"))
-
-    def post(self):
-        tweet = self.get_argument("tweet", default="") 	    
-        hashtag = self.get_argument("hashtag", default="")      
-        t = tornado.template.Template(html)
-
-	if tweet:
-	    score = 123#sentiment_score(tweet)
-            self.write(t.generate(tweet_senti=str(score), hashtag_senti="0"))
-	elif hashtag:
-            
-    	    tweets = api.search(hashtag, count=100)
-            tweets = [tweet.text for tweet in tweets]
-            scores = 123#sentiment_scores_of_sents(tweets)
-            for score, tweet in zip(scores, tweets):
-                print score, tweet.encode('utf8')
-
-            mean_score = np.mean(scores)
-            
-            self.write(t.generate(tweet_senti="0", hashtag_senti=str(mean_score)))
-	else:
-            self.write(t.generate(tweet_senti="0", hashtag_senti="0"))
+  def get(self):
+    t = tornado.template.Template(html)
+    self.write(t.generate(tweet_senti="0", hashtag_senti="0"))
+  def post(self):
+    tweet = self.get_argument("tweet", default="") 	    
+    hashtag = self.get_argument("hashtag", default="")      
+    t = tornado.template.Template(html)
+  if tweet:
+      score = 123
+      self.write(t.generate(tweet_senti=str(score), hashtag_senti="0"))
+  elif hashtag:
+    tweets = api.search(hashtag, count=100)
+    tweets = [tweet.text for tweet in tweets]
+    scores = 123#sentiment_scores_of_sents(tweets)
+    for score, tweet in zip(scores, tweets):
+      print score, tweet.encode('utf8')
+    mean_score = np.mean(scores)
+    self.write(t.generate(tweet_senti="0", hashtag_senti=str(mean_score)))
+  else:
+    self.write(t.generate(tweet_senti="0", hashtag_senti="0"))
 
 
 def main():
