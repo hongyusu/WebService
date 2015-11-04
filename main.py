@@ -109,11 +109,8 @@ class MainHandler(tornado.web.RequestHandler):
             
     	    tweets = api.search(hashtag, count=100)
             tweets = [tweet.text for tweet in tweets]
-            scores = 12#sentiment_scores_of_sents(tweets)
-            for score, tweet in zip(scores, tweets):
-                print score, tweet.encode('utf8')
 
-            mean_score = np.mean(scores)
+            mean_score = 11211
             
             self.write(t.generate(tweet_senti="0", hashtag_senti=str(mean_score)))
 	else:
