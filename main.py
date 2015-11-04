@@ -4,7 +4,7 @@ import tornado.web
 import tornado.template
 import tornado.httpserver
 import tweepy
-import numpy as np
+#import numpy as np
 
 #from sentiment import (sentiment_scores_of_sents, sentiment_score)
 
