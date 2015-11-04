@@ -60,7 +60,7 @@ html = """
         </div>	
         <input name="tweet_submit_button" type="submit">                        
       </form>
-      The sentiment index is {{tweet_senti}}    
+      Return: {{tweet_senti}}    
     </div>
     <br>
     <br>
@@ -76,7 +76,7 @@ html = """
         </div>
         <input name="hashtag_submit_id" type="submit">                        
       </form>
-      The sentiment index is {{hashtag_senti}}    
+      Return: {{hashtag_senti}}    
     </div>
     
   </body>
@@ -93,28 +93,23 @@ api = tweepy.API(auth)
 
 
 class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        t = tornado.template.Template(html)
-        self.write(t.generate(tweet_senti="0", hashtag_senti="0"))
+  def get(self):
+    t = tornado.template.Template(html)
+    self.write(t.generate(tweet_senti="0", hashtag_senti="0"))
 
-    def post(self):
-        tweet = self.get_argument("tweet", default="") 	    
-        hashtag = self.get_argument("hashtag", default="")      
-        t = tornado.template.Template(html)
-
-	if tweet:
-	    score = 12#sentiment_score(tweet)
-            self.write(t.generate(tweet_senti=str(score), hashtag_senti="0"))
-	elif hashtag:
-            
-    	    tweets = api.search(hashtag, count=100)
-            tweets = [tweet.text for tweet in tweets]
-
-            mean_score = 11211
-            
-            self.write(t.generate(tweet_senti="0", hashtag_senti=str(mean_score)))
-	else:
-            self.write(t.generate(tweet_senti="0", hashtag_senti="0"))
+  def post(self):
+    tweet = self.get_argument("tweet", default="") 
+    hashtag = self.get_argument("hashtag", default="") 
+    t = tornado.template.Template(html)
+    if tweet:
+      self.write(t.generate(tweet_senti=tweet,hashtag_senti=''))
+    elif hashtag:
+      tweets = api.search(hashtag,count =10)
+      tweettext = ''
+      for tweet in tweets: tweettext += ">>>>>  %s <<<<<" % tweet.text 
+      self.write(t.generate(tweet_senti='',hashtag_senti=tweettext))  
+    else:
+      self.write(t.generate(tweet_senti="0", hashtag_senti="0"))
 
 
 def main():
@@ -126,6 +121,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+  main()
     
 
