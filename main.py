@@ -46,7 +46,7 @@ html = """
   </head>
   <body>
     <h1> 
-      DNN Twitter sentiment analysis
+      analysis
     </h1>
     <div>
       <h3> 
