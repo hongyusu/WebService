@@ -6,7 +6,7 @@ import tornado.httpserver
 import tweepy
 import numpy as np
 
-from sentiment import (sentiment_scores_of_sents, sentiment_score)
+#from sentiment import (sentiment_scores_of_sents, sentiment_score)
 
 html = """
 <!DOCTYPE html>
@@ -103,13 +103,13 @@ class MainHandler(tornado.web.RequestHandler):
         t = tornado.template.Template(html)
 
 	if tweet:
-	    score = sentiment_score(tweet)
+	    score = 123#sentiment_score(tweet)
             self.write(t.generate(tweet_senti=str(score), hashtag_senti="0"))
 	elif hashtag:
             
     	    tweets = api.search(hashtag, count=100)
             tweets = [tweet.text for tweet in tweets]
-            scores = sentiment_scores_of_sents(tweets)
+            scores = 123#sentiment_scores_of_sents(tweets)
             for score, tweet in zip(scores, tweets):
                 print score, tweet.encode('utf8')
 
